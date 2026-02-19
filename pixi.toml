@@ -13,12 +13,18 @@ numpy = ">=2.4.2,<3"
 cartopy = ">=0.25.0,<0.26"
 python = "3.14.*"
 
+[pypi-dependencies]
+healpix-plotting = { path = ".", editable = true }
+
 [feature.affine.dependencies]
 affine = "*"
 
 [feature.test.dependencies]
 pytest = "*"
 pytest-cov = "*"
+
+[feature.test.tasks]
+tests = { cmd = "pytest --cov=healpix_plotting", default-environment = "default" }
 
 [feature.dev.dependencies]
 ipython = "*"
