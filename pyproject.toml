@@ -23,7 +23,7 @@ fallback_version = "9999"
 [tool.coverage.run]
 source = ["healpix_plotting"]
 branch = true
-omit = ["healpix_plotting/tests/*"]
+omit = []
 
 [tool.coverage.report]
 show_missing = true
