@@ -2,7 +2,7 @@ from importlib.metadata import version
 
 try:
     __version__ = version("healpix_plotting")
-except Exception:
+except Exception:  # pragma: no cover
     __version__ = "9999"
 
 from healpix_plotting.ellipsoid import EllipsoidLike
