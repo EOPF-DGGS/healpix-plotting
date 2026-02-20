@@ -167,3 +167,7 @@ class AffineSamplingGrid(SamplingGrid):
 class ConcreteSamplingGrid:
     x: np.ndarray
     y: np.ndarray
+
+    @property
+    def shape(self):
+        return self.x.shape
