@@ -20,6 +20,16 @@ packages = ["healpix_plotting"]
 [tool.setuptools_scm]
 fallback_version = "9999"
 
+[tool.coverage.run]
+source = ["healpix_plotting"]
+branch = true
+omit = ["healpix_plotting/tests/*"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING"]
+
+
 [tool.ruff]
 builtins = ["ellipsis"]
 exclude = [
