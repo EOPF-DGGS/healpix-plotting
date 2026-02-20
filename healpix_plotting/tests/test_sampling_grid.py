@@ -59,6 +59,34 @@ class TestParametrizedSamplingGrid:
         assert actual.resolution == expected_resolution
         assert actual.center == expected_center
 
+    @pytest.mark.parametrize(
+        ["shape", "resolution", "center", "expected"],
+        (
+            pytest.param(
+                (5, 5), (1, 1), (0, 0), np.mgrid[-2:3, -2:3].astype("float64")
+            ),
+            pytest.param(
+                (15, 7),
+                (0.5, 1.2),
+                (9.5, 10.0),
+                (
+                    np.mgrid[-3:4, -7:8]
+                    * np.array([1.2, 0.5], dtype="float64")[:, None, None]
+                    + np.array([10.0, 9.5], dtype="float64")[:, None, None]
+                ),
+            ),
+        ),
+    )
+    def test_resolve(self, shape, resolution, center, expected):
+        grid = sg.ParametrizedSamplingGrid(
+            shape=shape, resolution=resolution, center=center
+        )
+        # ignored, for now
+        actual = grid.resolve(0, 0)
+        expected_y, expected_x = expected
+        np.testing.assert_allclose(actual.x, expected_x)
+        np.testing.assert_allclose(actual.y, expected_y)
+
 
 class TestAffineSamplingGrid:
     @pytest.mark.parametrize(
