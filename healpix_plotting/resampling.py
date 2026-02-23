@@ -92,7 +92,7 @@ def resample(
     deduplicated = numpy_groupies.aggregate(inverse_indices, data, func=agg)
 
     # interpolation
-    return interpolator(
+    return target_grid, interpolator(
         deduplicated,
         target_grid,
         source_cell_ids,
