@@ -12,6 +12,7 @@ matplotlib-base = ">=3.10.8,<4"
 numpy = ">=2.4.2,<3"
 cartopy = ">=0.25.0,<0.26"
 python = "3.14.*"
+numpy_groupies = ">=0.11.3,<0.12"
 
 [pypi-dependencies]
 healpix-plotting = { path = ".", editable = true }
