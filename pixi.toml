@@ -13,6 +13,7 @@ numpy = ">=2.4.2,<3"
 cartopy = ">=0.25.0,<0.26"
 python = "3.14.*"
 numpy_groupies = ">=0.11.3,<0.12"
+scipy = ">=1.17.0,<2"
 
 [pypi-dependencies]
 healpix-plotting = { path = ".", editable = true }
