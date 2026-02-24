@@ -34,23 +34,26 @@ def nearest_neighbour_resampling(
         np.reshape(target_grid.y, -1),
         **params.as_keyword_params(),
     )
-    indices = np.searchsorted(source_cell_ids, target_cell_ids, side="left")
-    valid = indices < source_cell_ids.size
-    valid_indices = indices[valid]
-
-    sampling_mask = np.full_like(valid, dtype="bool", fill_value=False)
-    sampling_mask[valid] = source_cell_ids[valid_indices] == target_cell_ids[valid]
 
     raw_shape = (target_cell_ids.size,)
     shape = target_grid.shape
     if is_rgb(data):
-        raw_shape += (3,)
-        shape += (3,)
+        raw_shape += data.shape[-1:]
+        shape += data.shape[-1:]
 
-    raw_image = np.full(raw_shape, fill_value=background_value)
-    raw_image[sampling_mask, ...] = data[indices[sampling_mask], ...]
+    # indices that correspond to the target cells
+    #
+    # searchsorted(a, b) returns insert indices that insert a into b, not search
+    # values from a in b. We thus need to mask all target cell ids not in the source.
+    valid = np.isin(target_cell_ids, source_cell_ids)
+    indices = np.searchsorted(source_cell_ids, target_cell_ids, side="left")
+    valid_indices = indices[valid]
 
-    return np.reshape(raw_image, shape)
+    # actual interpolation
+    image = np.full(raw_shape, fill_value=background_value)
+    image[valid, ...] = data[valid_indices, ...]
+
+    return np.reshape(image, shape)
 
 
 def bilinear_resampling(
