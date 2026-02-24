@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 
 def is_rgb(x):
-    return x.ndim == 3 and x.shape[-1] == 3
+    return x.ndim == 3 and x.shape[-1] in (3, 4)
 
 
 def nearest_neighbour_resampling(
