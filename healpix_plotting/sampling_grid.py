@@ -133,8 +133,13 @@ class ParametrizedSamplingGrid:
 
         x, y = np.meshgrid(xs, ys)
 
-        extent_x = (center_x - half_x, center_x + half_x)
-        extent_y = (center_y - half_y, center_y + half_y)
+        xmin = np.min(xs) - half_x / size_x
+        xmax = np.max(xs) - half_x / size_x
+        ymin = np.min(ys) - half_y / size_y
+        ymax = np.max(ys) - half_y / size_y
+
+        extent_x = (xmin, xmax)
+        extent_y = (ymin, ymax)
 
         return ConcreteSamplingGrid(x, y, extent_x, extent_y)
 
@@ -170,8 +175,12 @@ class AffineSamplingGrid(SamplingGrid):
 
         x, y = self.center_transform * (pixel_x, pixel_y)
 
-        xmin, ymin = self.corner_transform * (0, 0)
-        xmax, ymax = self.corner_transform * self.shape
+        _, scale_x, _, _, _, scale_y = self.center_transform.to_gdal()
+
+        xmin = np.min(x) - scale_x / 2
+        xmax = np.max(x) - scale_x / 2
+        ymin = np.min(y) - scale_y / 2
+        ymax = np.max(y) - scale_y / 2
 
         extent_x = (xmin, xmax)
         extent_y = (ymin, ymax)
