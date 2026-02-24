@@ -171,9 +171,12 @@ class AffineSamplingGrid(SamplingGrid):
     def resolve(
         self, cell_ids: np.ndarray, parameters: HealpixGrid
     ) -> ConcreteSamplingGrid:
-        pixel_y, pixel_x = np.mgrid[: self.shape[1], : self.shape[0]]
+        pixel_x = np.arange(self.shape[0])
+        pixel_y = np.arange(self.shape[1])
 
-        x, y = self.center_transform * (pixel_x, pixel_y)
+        py, px = np.meshgrid(pixel_y, pixel_x)
+
+        x, y = self.center_transform * (px, py)
 
         _, scale_x, _, _, _, scale_y = self.center_transform.to_gdal()
 
