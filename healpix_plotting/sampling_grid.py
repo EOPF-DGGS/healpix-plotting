@@ -129,7 +129,7 @@ class ParametrizedSamplingGrid:
         xs = np.linspace(xmin, xmax, size_x, endpoint=True)
         ys = np.linspace(ymin, ymax, size_y, endpoint=True)
 
-        y, x = np.meshgrid(ys, xs)
+        x, y = np.meshgrid(xs, ys)
 
         extent_x = (xmin, xmax)
         extent_y = (ymin, ymax)
