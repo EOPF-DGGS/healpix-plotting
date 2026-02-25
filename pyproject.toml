@@ -8,6 +8,7 @@ dependencies = [
   "matplotlib",
   "cartopy",
   "numpy_groupies",
+  "scipy",
 ]
 dynamic = ["version"]
 
