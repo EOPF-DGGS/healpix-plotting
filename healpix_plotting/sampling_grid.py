@@ -123,8 +123,8 @@ class ParametrizedSamplingGrid:
 
         xmin = center_x - half_x * resolution_x
         xmax = center_x + half_x * resolution_x
-        ymin = center_y - half_y * resolution_y
-        ymax = center_y + half_y * resolution_y
+        ymin = np.clip(center_y - half_y * resolution_y, -90, 90)
+        ymax = np.clip(center_y + half_y * resolution_y, -90, 90)
 
         xs = np.linspace(xmin, xmax, size_x, endpoint=True)
         ys = np.linspace(ymin, ymax, size_y, endpoint=True)
