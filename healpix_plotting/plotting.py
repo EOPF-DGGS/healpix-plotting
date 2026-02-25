@@ -148,9 +148,12 @@ def plot(
             layout="constrained",
         )
 
-    # set extent before plotting for a smoother image
-    # See https://github.com/SciTools/cartopy/issues/1468
-    ax.set_extent(target_grid.extent, crs=ccrs.PlateCarree())
+    if cell_ids.size == 12 * 4**healpix_grid.level:
+        ax.set_global()
+    else:
+        # set extent before plotting for a smoother image
+        # See https://github.com/SciTools/cartopy/issues/1468
+        ax.set_extent(target_grid.extent, crs=ccrs.PlateCarree())
     mappable = ax.imshow(
         image,
         extent=target_grid.extent,
