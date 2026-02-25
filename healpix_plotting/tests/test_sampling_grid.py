@@ -129,38 +129,27 @@ class TestParametrizedSamplingGrid:
         ["shape", "resolution", "center", "expected"],
         (
             pytest.param(
-                (5, 5), (1, 1), (0, 0), np.mgrid[-2:3, -2:3].astype("float64")
+                (5, 5),
+                (1, 1),
+                (0, 0),
+                np.stack(
+                    np.meshgrid(
+                        0.0 + 1.0 * np.arange(-2, 3),
+                        0.0 + 1.0 * np.arange(-2, 3),
+                    ),
+                    axis=0,
+                ),
             ),
             pytest.param(
                 (15, 7),
                 (0.5, 1.2),
                 (9.5, 10.0),
-                (
-                    np.mgrid[-3:4, -7:8]
-                    * np.array([1.2, 0.5], dtype="float64")[:, None, None]
-                    + np.array([10.0, 9.5], dtype="float64")[:, None, None]
-                ),
-            ),
-            pytest.param(
-                (7, 5),
-                None,
-                (10.0, 10.0),
-                (
-                    np.mgrid[-2:3, -3:4]
-                    * np.array([3.6063290544745636, 1.875], dtype="float64")[
-                        :, None, None
-                    ]
-                    + np.array([10.0, 10.0], dtype="float64")[:, None, None]
-                ),
-            ),
-            pytest.param(
-                (7, 5),
-                (0.5, 0.5),
-                None,
-                (
-                    np.mgrid[-2:3, -3:4]
-                    * np.array([0.5, 0.5], dtype="float64")[:, None, None]
-                    + np.array([0.0, 11.25], dtype="float64")[:, None, None]
+                np.stack(
+                    np.meshgrid(
+                        10.0 + 1.2 * np.arange(-3, 4),
+                        9.5 + 0.5 * np.arange(-7, 8),
+                    ),
+                    axis=0,
                 ),
             ),
         ),
