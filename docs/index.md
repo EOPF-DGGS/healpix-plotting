@@ -1,6 +1,8 @@
 # healpix-plotting
 
-_Visualise HEALPix gridded data on geographic map projections._
+`healpix-plotting` prioritises **getting a usable figure quickly** over perfectly accurate cell-geometry rendering. It rasterises HEALPix data via nearest-neighbour resampling onto a regular lon/lat grid and renders the result with Cartopy's `imshow`.
+
+Unlike astronomy-focused HEALPix tools, this library is built with **Earth observation and geoscience in mind**: the underlying coordinate operations are provided by [healpix-geo](https://healpix-geo.readthedocs.io/en/latest/), which supports geodetically correct reference ellipsoids such as WGS84.
 
 ```{toctree}
 ---
@@ -22,10 +24,6 @@ hidden: true
 api
 terminology
 ```
-
-**healpix-plotting** bridges the [HEALPix](https://healpix.jpl.nasa.gov/) discrete sphere partition
-with Matplotlib and Cartopy. It handles resampling and rendering so you can go from a HEALPix array
-to a finished map in a single function call.
 
 ::::{grid} 1 1 2 2
 :gutter: 3
