@@ -13,7 +13,6 @@ kernelspec:
 
 This guide shows the three ways to define a sampling grid in healpix-plotting, from the simplest dict shorthand to a pixel-aligned affine grid.
 
-
 ## Setup
 
 ```{code-cell} python
@@ -30,8 +29,9 @@ The simplest way: pass `{"shape": N}` and the spatial extent is inferred automat
 In real workflows your `cell_ids` and `data` come from a file (NetCDF, Zarr, …). Here we use a synthetic wave pattern.
 
 ```{code-cell} python
-
-healpix_grid = healpix_plotting.HealpixGrid(level=3, indexing_scheme="nested", ellipsoid="WGS84")
+healpix_grid = healpix_plotting.HealpixGrid(
+    level=3, indexing_scheme="nested", ellipsoid="WGS84"
+)
 
 cell_ids = np.arange(4**healpix_grid.level)
 lon, lat = healpix_grid.operations.healpix_to_lonlat(
@@ -44,14 +44,16 @@ print(f"data range: [{data.min():.2f}, {data.max():.2f}]")
 ```
 
 ```{code-cell} python
-fig, ax = plt.subplots(1, 1, subplot_kw={"projection": ccrs.Mollweide()},figsize=(12,12))
+fig, ax = plt.subplots(
+    1, 1, subplot_kw={"projection": ccrs.Mollweide()}, figsize=(12, 12)
+)
 
-mappable = healpix_plotting.plot(cell_ids, data, 
-                                 healpix_grid=healpix_grid, 
-                                 sampling_grid={"shape": 512},ax=ax)
+mappable = healpix_plotting.plot(
+    cell_ids, data, healpix_grid=healpix_grid, sampling_grid={"shape": 512}, ax=ax
+)
 
 fig.colorbar(mappable, orientation="horizontal")
-ax= mappable.figure.axes[0]
+ax = mappable.figure.axes[0]
 
 ax.coastlines()
 ax.gridlines(draw_labels="x")
@@ -71,7 +73,9 @@ from healpix_plotting import SamplingGrid
 from healpix_plotting.sampling_grid import ParametrizedSamplingGrid
 
 # Use WGS84 — the standard geodetic ellipsoid for Earth observation
-healpix_grid = healpix_plotting.HealpixGrid(level=6, indexing_scheme="nested", ellipsoid="WGS84")
+healpix_grid = healpix_plotting.HealpixGrid(
+    level=6, indexing_scheme="nested", ellipsoid="WGS84"
+)
 
 grid = ParametrizedSamplingGrid.from_bbox(
     bbox=(5, 36.0, 13.0, 45.0),  # (xmin, ymin, xmax, ymax) in degrees
@@ -86,14 +90,16 @@ lon, lat = healpix_grid.operations.healpix_to_lonlat(
 )
 data = np.cos(8 * np.deg2rad(lon)) * np.sin(4 * np.deg2rad(lat))
 
-fig, axes = plt.subplots(1, 1, subplot_kw={"projection": ccrs.PlateCarree()},figsize=(12,12))
+fig, axes = plt.subplots(
+    1, 1, subplot_kw={"projection": ccrs.PlateCarree()}, figsize=(12, 12)
+)
 
-mappable = healpix_plotting.plot(cell_ids, data, 
-                                 healpix_grid=healpix_grid, 
-                                 sampling_grid=grid ,ax=axes)
+mappable = healpix_plotting.plot(
+    cell_ids, data, healpix_grid=healpix_grid, sampling_grid=grid, ax=axes
+)
 
 fig.colorbar(mappable, orientation="horizontal")
-ax= mappable.figure.axes[0]
+ax = mappable.figure.axes[0]
 ax.coastlines()
 ax.gridlines(draw_labels="x")
 ax.gridlines(draw_labels="y")
@@ -109,9 +115,10 @@ Here we define a 0.01°/pixel grid (~1 km) over Corsica.
 from affine import Affine
 from healpix_plotting.sampling_grid import AffineSamplingGrid
 
-
 # Use WGS84 — the standard geodetic ellipsoid for Earth observation
-healpix_grid = healpix_plotting.HealpixGrid(level=6, indexing_scheme="nested", ellipsoid="WGS84")
+healpix_grid = healpix_plotting.HealpixGrid(
+    level=6, indexing_scheme="nested", ellipsoid="WGS84"
+)
 
 cell_ids = np.arange(4**healpix_grid.level, dtype="uint64")
 
@@ -121,17 +128,19 @@ lon, lat = healpix_grid.operations.healpix_to_lonlat(
 )
 data = np.cos(8 * np.deg2rad(lon)) * np.sin(4 * np.deg2rad(lat))
 
-transform = Affine(0.01, 0, 5,0, -0.01, 45)  # 0.01° resolution
+transform = Affine(0.01, 0, 5, 0, -0.01, 45)  # 0.01° resolution
 grid = AffineSamplingGrid.from_transform(transform, shape=(512, 512))
 
-fig, axes = plt.subplots(1, 1, subplot_kw={"projection": ccrs.Mollweide()},figsize=(12,12))
+fig, axes = plt.subplots(
+    1, 1, subplot_kw={"projection": ccrs.Mollweide()}, figsize=(12, 12)
+)
 
-mappable = healpix_plotting.plot(cell_ids, data, 
-                                 healpix_grid=healpix_grid, 
-                                 sampling_grid=grid ,ax=axes)
+mappable = healpix_plotting.plot(
+    cell_ids, data, healpix_grid=healpix_grid, sampling_grid=grid, ax=axes
+)
 
 fig.colorbar(mappable, orientation="horizontal")
-ax= mappable.figure.axes[0]
+ax = mappable.figure.axes[0]
 ax.coastlines()
 ax.gridlines(draw_labels="x")
 ax.gridlines(draw_labels="y")
@@ -141,7 +150,7 @@ ax.gridlines(draw_labels="y")
 
 For sanity checks or presentations you can combine fast raster plots from `healpix-plotting` with boundary polygons from [`xdggs`](https://xdggs.readthedocs.io/):
 
-```{code-cell} python 
+```{code-cell} python
 ---
 tags: [hide-cell]
 ---
@@ -152,7 +161,9 @@ import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 
 # grid
-healpix_grid = healpix_plotting.HealpixGrid(level=4, indexing_scheme="nested", ellipsoid="WGS84")
+healpix_grid = healpix_plotting.HealpixGrid(
+    level=4, indexing_scheme="nested", ellipsoid="WGS84"
+)
 
 cell_ids = np.arange(4**healpix_grid.level, dtype="uint64")
 
@@ -165,26 +176,26 @@ data = np.cos(8 * np.deg2rad(lon)) * np.sin(4 * np.deg2rad(lat)) + 5
 
 # polygons of cells
 info = xdggs.HealpixInfo(
-    level=healpix_grid.level,
-    indexing_scheme=healpix_grid.indexing_scheme
+    level=healpix_grid.level, indexing_scheme=healpix_grid.indexing_scheme
 )
 
 polys = info.cell_boundaries(cell_ids)
 
 # figure
-fig, ax = plt.subplots(1, 1, figsize=(12, 12), subplot_kw={"projection": ccrs.Mollweide()})
+fig, ax = plt.subplots(
+    1, 1, figsize=(12, 12), subplot_kw={"projection": ccrs.Mollweide()}
+)
 
 # plot HEALPix data
-mappable = healpix_plotting.plot(cell_ids, data,
-                                 healpix_grid=healpix_grid,
-                                 sampling_grid={"shape": 1024},
-                                 ax=ax)
+mappable = healpix_plotting.plot(
+    cell_ids, data, healpix_grid=healpix_grid, sampling_grid={"shape": 1024}, ax=ax
+)
 
 # colorbar
 fig.colorbar(mappable, orientation="horizontal")
 
 # add cell boundaries
-ax.add_geometries(polys, crs=ccrs.PlateCarree(), facecolor="none",linewidth=0.2)
+ax.add_geometries(polys, crs=ccrs.PlateCarree(), facecolor="none", linewidth=0.2)
 
 ax.coastlines()
 ax.gridlines(draw_labels=True)

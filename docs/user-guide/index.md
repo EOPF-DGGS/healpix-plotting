@@ -1,6 +1,6 @@
 # User Guide
 
-Everything you need to understand how healpix-plotting works. 
+Everything you need to understand how healpix-plotting works.
 
 ## Chapters
 
@@ -26,7 +26,6 @@ How the output pixel grid is defined: dict shorthand, bounding box, or affine tr
 :::
 
 ::::
-
 
 ```{toctree}
 :maxdepth: 1

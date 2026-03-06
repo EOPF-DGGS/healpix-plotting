@@ -24,23 +24,24 @@ The spatial extent and pixel resolution are inferred automatically from the boun
 
 Use `SamplingGrid.from_bbox()` to pin the output to a fixed region regardless of the data:
 
-``` python
+```python
 sampling_grid = healpix_plotting.SamplingGrid.from_bbox(
-    bbox=(5, 36.0, 13.0, 45.0),   # (lon_min, lat_min, lon_max, lat_max) in degrees
+    bbox=(5, 36.0, 13.0, 45.0),  # (lon_min, lat_min, lon_max, lat_max) in degrees
     shape=512,
 )
 ```
+
 This is the right choice when comparing multiple datasets or animating over time.
 
 ### 3. Affine transform (`AffineSamplingGrid`)
 
 Use `AffineSamplingGrid` when the output pixels must align with a reference raster (e.g. a GeoTIFF):
 
-``` python
+```python
 from healpix_plotting.sampling_grid import AffineSamplingGrid
 from affine import Affine
 
-transform = Affine(0.01, 0, 5,0, -0.01, 45)  # 0.01 deg/pixel, top-left at (-10, 60)
+transform = Affine(0.01, 0, 5, 0, -0.01, 45)  # 0.01 deg/pixel, top-left at (-10, 60)
 sampling_grid = AffineSamplingGrid.from_transform(transform, shape=(4000, 2500))
 ```
 

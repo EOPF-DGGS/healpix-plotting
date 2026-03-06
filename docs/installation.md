@@ -1,4 +1,5 @@
 # Installation
+
 This guide explains you how to install healpix-plotting on your system.
 
 ## Requirements
@@ -63,7 +64,6 @@ uv add healpix-plotting
 
 ```python
 import healpix_plotting
+
 print(healpix_plotting.__version__)
 ```
-
-

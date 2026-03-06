@@ -16,19 +16,19 @@ ellipsoids, and coordinate conversions.
 In healpix-plotting, you describe your data with a `HealpixGrid` object that wraps
 the healpix-geo parameters:
 
-``` python
+```python
 import healpix_plotting
 
 grid = healpix_plotting.HealpixGrid(
-    level=4,                   # resolution level, 0-29
+    level=4,  # resolution level, 0-29
     indexing_scheme="nested",  # "nested", "ring", or "zuniq"
-    ellipsoid="sphere",        # default; "WGS84" for geodesic accuracy
+    ellipsoid="sphere",  # default; "WGS84" for geodesic accuracy
 )
 ```
 
 It exposes a `.operations` property that delegates directly to healpix-geo:
 
-``` python
+```python
 import numpy as np
 
 cell_ids = np.arange(12 * 4**grid.level, dtype="uint64")

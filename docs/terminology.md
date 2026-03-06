@@ -22,7 +22,7 @@ Zuniq scheme
   Compact unique identifier encoding both level and cell ID in a single integer.
 
 WGS84
-  World Geodetic System 1984 — the standard GPS ellipsoid (EPSG:4326). 
+  World Geodetic System 1984 — the standard GPS ellipsoid (EPSG:4326).
 ```
 
 ## Resampling
@@ -51,9 +51,8 @@ Cartopy CRS
   Coordinate Reference System object from the `cartopy` library.
 
 Mollweide
-  Equal-area pseudocylindrical map projection. 
+  Equal-area pseudocylindrical map projection.
 
 PlateCarree
-  Simple equirectangular projection (lon/lat as x/y). 
+  Simple equirectangular projection (lon/lat as x/y).
 ```
-
