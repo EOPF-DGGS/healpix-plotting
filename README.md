@@ -47,118 +47,11 @@ pip install healpix-plotting
 
 ## How it works
 
-1. **Build a target sampling grid** — a regular lon/lat grid inferred from the data, defined by a bounding box, or specified via an affine transform (see [Sampling grid variants](#sampling-grid-variants)).
+1. **Build a target sampling grid** — a regular lon/lat grid inferred from the data, defined by a bounding box, or specified via an affine transform.
 2. **Resample** — each sampling point is mapped to a HEALPix cell id and filled by nearest-neighbour lookup (with optional aggregation for duplicate ids).
 3. **Render** — the resulting raster is drawn on a Cartopy axis with `imshow(..., transform=PlateCarree())`.
 
 Because the library rasterises via nearest-neighbour resampling, it does **not** attempt exact polygon boundary filling.
-
----
-
-## `HealpixGrid`
-
-```python
-hpplt.HealpixGrid(level, indexing_scheme, ellipsoid="sphere")
-```
-
-| Parameter         | Type          | Description                                                                                                                                           |
-| ----------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `level`           | `int`         | HEALPix depth. Must be in **[0, 29]**.                                                                                                                |
-| `indexing_scheme` | `str`         | Cell numbering scheme: `"nested"`, `"ring"`, or `"zuniq"`.                                                                                            |
-| `ellipsoid`       | `str` or dict | Reference ellipsoid: `"sphere"` (default), `"WGS84"`, or a custom dict with `radius` (sphere) or `semimajor_axis` + `inverse_flattening` (ellipsoid). |
-
-`healpix_grid.as_keyword_params()` returns `{"depth": level, "ellipsoid": ellipsoid}` for direct unpacking into `healpix-geo` calls.
-
-> **`"zuniq"` caveat:** `zuniq.healpix_to_lonlat` does not accept a `depth` argument, so the pattern
-> `healpix_grid.operations.healpix_to_lonlat(cell_ids, **healpix_grid.as_keyword_params())`
-> will fail when `indexing_scheme="zuniq"`. Pass only `ellipsoid` explicitly in that case:
->
-> ```python
-> lon, lat = healpix_grid.operations.healpix_to_lonlat(cell_ids, ellipsoid=healpix_grid.ellipsoid)
-> ```
-
----
-
-## Key parameters of `plot()`
-
-`plot()` returns a `matplotlib.image.AxesImage` (the mappable). Use `.axes` to access the underlying `Axes` object.
-
-| Parameter          | Description                                                                                                                                                                                    |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `cell_ids`         | `numpy.ndarray` of cell ids describing spatial positions.                                                                                                                                      |
-| `data`             | 1-D array for scalar data (color-mapped), or 2-D array of shape `(N, 3)` / `(N, 4)` for RGB / RGBA.                                                                                            |
-| `healpix_grid`     | A `HealpixGrid` instance (or equivalent dict).                                                                                                                                                 |
-| `sampling_grid`    | Target raster resolution and extent. Pass a dict such as `{"shape": 1024}`; missing `center` / `resolution` are inferred from the data. See [Sampling grid variants](#sampling-grid-variants). |
-| `projection`       | A Cartopy CRS name (e.g. `"Mollweide"`) or an actual CRS object. Unknown names raise a `ValueError`.                                                                                           |
-| `agg`              | Aggregation function applied when `cell_ids` contains duplicates before resampling. Accepted values: `"mean"` (default), `"median"`, `"std"`, `"var"`, `"min"`, `"max"`, `"first"`, `"last"`.  |
-| `interpolation`    | Resampling method. `"nearest"` (default and only implemented). `"bilinear"` is accepted by the API but raises `NotImplementedError`.                                                           |
-| `background_value` | Fill value for grid points with no matching cell id. Default: `numpy.nan`.                                                                                                                     |
-| `ax`               | An existing Cartopy `Axes` to draw on. If omitted, a new figure is created using `projection`.                                                                                                 |
-| `title`            | Optional string title for the axes.                                                                                                                                                            |
-| `cmap`             | Colormap (name or `Colormap` object). Default: `"viridis"`.                                                                                                                                    |
-| `vmin`, `vmax`     | Scalar data range for colour normalisation.                                                                                                                                                    |
-| `norm`             | A `matplotlib.colors.Normalize` instance for finer colour control.                                                                                                                             |
-| `colorbar`         | `True` to add a colorbar, or a dict of kwargs forwarded to `figure.colorbar()`. Default: `False`.                                                                                              |
-| `axis_labels`      | `None` (default, uses `"Longitude"` / `"Latitude"`), a dict with `"x"` / `"y"` keys, or `"none"` to suppress labels entirely.                                                                  |
-
----
-
-## Sampling grid variants
-
-Three ways to define the target raster:
-
-### 1. Parametrised (dict or `ParametrizedSamplingGrid`)
-
-Pass a dict to `sampling_grid`. Recognised keys:
-
-| Key          | Default  | Description                                                                           |
-| ------------ | -------- | ------------------------------------------------------------------------------------- |
-| `shape`      | `1024`   | Output array size. An `int` produces a square grid; a 2-tuple sets `(width, height)`. |
-| `resolution` | inferred | Step size in degrees. A `float` expands to equal x/y steps.                           |
-| `center`     | inferred | `(lon, lat)` centre of the grid in degrees.                                           |
-
-```python
-sampling_grid = {"shape": (2048, 1024), "center": (0.0, 0.0)}
-```
-
-### 2. Bounding box (`ParametrizedSamplingGrid.from_bbox`)
-
-```python
-from healpix_plotting import SamplingGrid
-from healpix_plotting.sampling_grid import ParametrizedSamplingGrid
-
-grid = ParametrizedSamplingGrid.from_bbox(
-    bbox=(-30.0, 35.0, 45.0, 75.0),  # (xmin, ymin, xmax, ymax) in degrees
-    shape=512,
-)
-hpplt.plot(..., sampling_grid=grid)
-```
-
-### 3. Affine transform (`AffineSamplingGrid`)
-
-For raster-aligned outputs (e.g. matching an existing GeoTIFF grid):
-
-```python
-from affine import Affine
-from healpix_plotting.sampling_grid import AffineSamplingGrid
-
-transform = Affine(0.1, 0, -180, 0, -0.1, 90)  # 0.1° resolution, global
-grid = AffineSamplingGrid.from_transform(transform, shape=(3600, 1800))
-hpplt.plot(..., sampling_grid=grid)
-```
-
----
-
-## RGB / RGBA data
-
-`plot()` accepts multi-band data directly. If `data` has shape `(N, 3)` (RGB) or `(N, 4)` (RGBA), the values are composited per-pixel rather than colour-mapped. Colourmap parameters (`cmap`, `vmin`, `vmax`, `norm`) are ignored in this mode.
-
-```python
-rgb = np.stack([red, green, blue], axis=-1)  # shape (N, 3), values in [0, 1]
-hpplt.plot(cell_ids, rgb, healpix_grid=healpix_grid, sampling_grid={"shape": 1024})
-```
-
----
 
 ## Ellipsoidal support
 
@@ -196,34 +89,6 @@ HEALPix is a spherical tessellation. Depending on your use case you may need to 
 
 ---
 
-## Recipe: overlay true HEALPix boundaries
-
-For sanity checks or presentations you can combine fast raster plots from `healpix-plotting`
-with boundary polygons from [`xdggs`](https://xdggs.readthedocs.io/):
-
-```python
-import xdggs
-import cartopy.crs as ccrs
-
-info = xdggs.HealpixInfo(
-    level=healpix_grid.level,
-    indexing_scheme=healpix_grid.indexing_scheme,
-)
-polys = info.cell_boundaries(cell_ids_subset)  # shapely polygons
-
-# plot() returns an AxesImage; use .axes to get the Axes object
-ax = hpplt.plot(...).axes
-ax.add_geometries(
-    polys,
-    crs=ccrs.PlateCarree(),
-    facecolor="none",
-    edgecolor="k",
-    linewidth=0.2,
-)
-```
-
----
-
 ## Alternatives
 
 | Library                                                      | Best for                                                                            |
@@ -240,7 +105,6 @@ Working in the ECMWF/earthkit ecosystem?           → earthkit-plots    ✓
 Need exact cell boundaries / polygon operations?   → xdggs             ✓
 Standard healpy full-sky (astronomy) workflow?     → healpy            ✓
 ```
-
 ---
 
 ## Implementation notes
@@ -263,8 +127,3 @@ Plotting uses `imshow` with `transform=ccrs.PlateCarree()` and `interpolation="n
 For non-global subsets, the extent is set **before** plotting to obtain a smoother result
 with Cartopy.
 
----
-
-## License
-
-Apache License 2.0 — see [LICENSE](LICENSE) for details.
