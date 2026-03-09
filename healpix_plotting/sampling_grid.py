@@ -39,6 +39,13 @@ class SamplingGrid:
         raise NotImplementedError
 
 
+def crosses_prime_meridian(cell_ids, params):
+    # very coarse detection of prime meridian crossing
+    base_cells = cell_ids // 4**params.level
+    crossing_base_cells = np.array([0, 3, 4, 8, 11], dtype="uint64")
+    return np.any(np.isin(crossing_base_cells, base_cells))
+
+
 def _infer_parameters(
     grid: ParametrizedSamplingGrid, cell_ids: np.ndarray, params: HealpixGrid
 ) -> (tuple[int, int], tuple[float, float], tuple[float, float]):
@@ -50,6 +57,9 @@ def _infer_parameters(
         lon, lat = params.operations.healpix_to_lonlat(
             cell_ids, **params.as_keyword_params()
         )
+        if crosses_prime_meridian(cell_ids, params):
+            lon = (lon + 180) % 360 - 180
+
         if center is None:
             center = (np.mean(lon).item(), np.mean(lat).item())
 
@@ -121,10 +131,15 @@ class ParametrizedSamplingGrid:
         half_y = size_y // 2
         center_x, center_y = center
 
-        xmin = (center_x - half_x * resolution_x + 180) % 360 - 180
-        xmax = (center_x + half_x * resolution_x + 180) % 360 - 180
+        xmin = center_x - half_x * resolution_x
+        xmax = center_x + half_x * resolution_x
         ymin = np.clip(center_y - half_y * resolution_y, -90, 90).item()
         ymax = np.clip(center_y + half_y * resolution_y, -90, 90).item()
+
+        if xmin > xmax:
+            # prime meridian crossing
+            xmin = (xmin + 180) % 360 - 180
+            xmax = (xmax + 180) % 360 - 180
 
         xs = np.linspace(xmin, xmax, size_x, endpoint=True)
         ys = np.linspace(ymin, ymax, size_y, endpoint=True)
