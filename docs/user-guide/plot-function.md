@@ -1,6 +1,6 @@
 # The plot() function
 
-{func}`healpix_plotting.plot` is the main entry point of the library. It resamples HEALPix data onto a regular pixel grid and renders it with Matplotlib and Cartopy.
+{func}`healpix_plot.plot` is the main entry point of the library. It resamples HEALPix data onto a regular pixel grid and renders it with Matplotlib and Cartopy.
 
 `plot()` returns a `matplotlib.image.AxesImage` (the mappable). Use `.axes` to access the underlying `Axes` object.
 
@@ -25,7 +25,7 @@
 ## Minimal call
 
 ```python
-healpix_plotting.plot(
+healpix_plot.plot(
     cell_ids,  # 1-D array of HEALPix cell IDs (uint64)
     data,  # 1-D scalar array, or (N, 3)/(N, 4) for RGB/RGBA
     healpix_grid=grid,  # HealpixGrid object (or dict)
@@ -36,8 +36,8 @@ healpix_plotting.plot(
 ## Interpolation
 
 ```python
-healpix_plotting.plot(..., interpolation="nearest")  # default
-healpix_plotting.plot(
+healpix_plot.plot(..., interpolation="nearest")  # default
+healpix_plot.plot(
     ..., interpolation="bilinear"
 )  # smoother, better for continuous fields
 ```
@@ -51,19 +51,19 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 
 fig, ax = plt.subplots(subplot_kw={"projection": ccrs.Robinson()})
-healpix_plotting.plot(..., ax=ax)
+healpix_plot.plot(..., ax=ax)
 plt.show()
 ```
 
 ## Title and axis labels
 
 ```python
-healpix_plotting.plot(
+healpix_plot.plot(
     ...,
     title="Surface temperature",
     axis_labels={"x": "Longitude", "y": "Latitude"},
 )
-healpix_plotting.plot(..., axis_labels="none")  # hide labels
+healpix_plot.plot(..., axis_labels="none")  # hide labels
 ```
 
 ## RGB / RGBA data
@@ -72,7 +72,7 @@ healpix_plotting.plot(..., axis_labels="none")  # hide labels
 
 ```python
 rgb = np.stack([r, g, b], axis=1)  # shape (N, 3)
-healpix_plotting.plot(
+healpix_plot.plot(
     cell_ids, rgb, healpix_grid=healpix_grid, sampling_grid={"shape": 1024}
 )
 ```

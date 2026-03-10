@@ -1,6 +1,6 @@
 # healpix-plotting
 
-`healpix-plotting` prioritises **getting a usable figure quickly** over perfectly accurate cell-geometry rendering. It rasterises HEALPix data via nearest-neighbour resampling onto a regular lon/lat grid and renders the result with Cartopy's `imshow`.
+`healpix-plot` prioritises **getting a usable figure quickly** over perfectly accurate cell-geometry rendering. It rasterises HEALPix data via nearest-neighbour resampling onto a regular lon/lat grid and renders the result with Cartopy's `imshow`.
 
 Unlike astronomy-focused HEALPix tools, this library is built with **Earth observation and geoscience in mind**: the underlying coordinate operations are provided by [healpix-geo](https://healpix-geo.readthedocs.io/en/latest/), which supports geodetically correct reference ellipsoids such as WGS84.
 

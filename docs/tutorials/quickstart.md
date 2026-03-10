@@ -19,7 +19,7 @@ This guide shows the three ways to define a sampling grid in healpix-plotting, f
 import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import healpix_plotting
+import healpix_plot
 ```
 
 ## 1 — Dict shorthand
@@ -29,7 +29,7 @@ The simplest way: pass `{"shape": N}` and the spatial extent is inferred automat
 In real workflows your `cell_ids` and `data` come from a file (NetCDF, Zarr, …). Here we use a synthetic wave pattern.
 
 ```{code-cell} python
-healpix_grid = healpix_plotting.HealpixGrid(
+healpix_grid = healpix_plot.HealpixGrid(
     level=3, indexing_scheme="nested", ellipsoid="WGS84"
 )
 
@@ -48,7 +48,7 @@ fig, ax = plt.subplots(
     1, 1, subplot_kw={"projection": ccrs.Mollweide()}, figsize=(12, 12)
 )
 
-mappable = healpix_plotting.plot(
+mappable = healpix_plot.plot(
     cell_ids, data, healpix_grid=healpix_grid, sampling_grid={"shape": 512}, ax=ax
 )
 
@@ -69,11 +69,11 @@ Use `from_bbox` when you want to pin the output to a fixed geographic extent, re
 Here we zoom in on the western Mediterranean.
 
 ```{code-cell} python
-from healpix_plotting import SamplingGrid
-from healpix_plotting.sampling_grid import ParametrizedSamplingGrid
+from healpix_plot import SamplingGrid
+from healpix_plot.sampling_grid import ParametrizedSamplingGrid
 
 # Use WGS84 — the standard geodetic ellipsoid for Earth observation
-healpix_grid = healpix_plotting.HealpixGrid(
+healpix_grid = healpix_plot.HealpixGrid(
     level=6, indexing_scheme="nested", ellipsoid="WGS84"
 )
 
@@ -94,7 +94,7 @@ fig, axes = plt.subplots(
     1, 1, subplot_kw={"projection": ccrs.PlateCarree()}, figsize=(12, 12)
 )
 
-mappable = healpix_plotting.plot(
+mappable = healpix_plot.plot(
     cell_ids, data, healpix_grid=healpix_grid, sampling_grid=grid, ax=axes
 )
 
@@ -113,10 +113,10 @@ Here we define a 0.01°/pixel grid (~1 km) over Corsica.
 
 ```{code-cell} python
 from affine import Affine
-from healpix_plotting.sampling_grid import AffineSamplingGrid
+from healpix_plot.sampling_grid import AffineSamplingGrid
 
 # Use WGS84 — the standard geodetic ellipsoid for Earth observation
-healpix_grid = healpix_plotting.HealpixGrid(
+healpix_grid = healpix_plot.HealpixGrid(
     level=6, indexing_scheme="nested", ellipsoid="WGS84"
 )
 
@@ -135,7 +135,7 @@ fig, axes = plt.subplots(
     1, 1, subplot_kw={"projection": ccrs.Mollweide()}, figsize=(12, 12)
 )
 
-mappable = healpix_plotting.plot(
+mappable = healpix_plot.plot(
     cell_ids, data, healpix_grid=healpix_grid, sampling_grid=grid, ax=axes
 )
 
@@ -148,20 +148,20 @@ ax.gridlines(draw_labels="y")
 
 ## Recipe: overlay true HEALPix boundaries
 
-For sanity checks or presentations you can combine fast raster plots from `healpix-plotting` with boundary polygons from [`xdggs`](https://xdggs.readthedocs.io/):
+For sanity checks or presentations you can combine fast raster plots from `healpix-plot` with boundary polygons from [`xdggs`](https://xdggs.readthedocs.io/):
 
 ```{code-cell} python
 ---
 tags: [hide-cell]
 ---
 import numpy as np
-import healpix_plotting
+import healpix_plot
 import xdggs
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 
 # grid
-healpix_grid = healpix_plotting.HealpixGrid(
+healpix_grid = healpix_plot.HealpixGrid(
     level=4, indexing_scheme="nested", ellipsoid="WGS84"
 )
 
@@ -187,7 +187,7 @@ fig, ax = plt.subplots(
 )
 
 # plot HEALPix data
-mappable = healpix_plotting.plot(
+mappable = healpix_plot.plot(
     cell_ids, data, healpix_grid=healpix_grid, sampling_grid={"shape": 1024}, ax=ax
 )
 

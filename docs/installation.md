@@ -1,6 +1,6 @@
 # Installation
 
-This guide explains you how to install healpix-plotting on your system.
+This guide explains you how to install healpix-plot on your system.
 
 ## Requirements
 
@@ -15,7 +15,7 @@ This guide explains you how to install healpix-plotting on your system.
 :::{tab-item} conda
 
 ```bash
-conda install -c conda-forge healpix-plotting
+conda install -c conda-forge healpix-plot
 ```
 
 :::
@@ -23,7 +23,7 @@ conda install -c conda-forge healpix-plotting
 :::{tab-item} mamba
 
 ```bash
-mamba install -c conda-forge healpix-plotting
+mamba install -c conda-forge healpix-plot
 ```
 
 :::
@@ -31,7 +31,7 @@ mamba install -c conda-forge healpix-plotting
 :::{tab-item} pixi
 
 ```bash
-pixi add healpix-plotting
+pixi add healpix-plot
 ```
 
 :::
@@ -45,7 +45,7 @@ pixi add healpix-plotting
 :::{tab-item} pip
 
 ```bash
-pip install healpix-plotting
+pip install healpix-plot
 ```
 
 :::
@@ -53,7 +53,7 @@ pip install healpix-plotting
 :::{tab-item} uv
 
 ```bash
-uv add healpix-plotting
+uv add healpix-plot
 ```
 
 :::
@@ -63,7 +63,7 @@ uv add healpix-plotting
 ## Verify
 
 ```python
-import healpix_plotting
+import healpix_plot
 
-print(healpix_plotting.__version__)
+print(healpix_plot.__version__)
 ```

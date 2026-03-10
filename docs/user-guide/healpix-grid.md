@@ -1,6 +1,6 @@
 # The HEALPix grid
 
-healpix-plotting uses [healpix-geo](https://healpix-geo.readthedocs.io) internally for all
+healpix-plot uses [healpix-geo](https://healpix-geo.readthedocs.io) internally for all
 HEALPix coordinate conversions. The healpix-geo documentation covers everything you need to
 know about the HEALPix grid: resolution levels, indexing schemes (nested, ring, zuniq),
 ellipsoids, and coordinate conversions.
@@ -13,13 +13,13 @@ ellipsoids, and coordinate conversions.
 
 ## The HealpixGrid object
 
-In healpix-plotting, you describe your data with a `HealpixGrid` object that wraps
+In healpix-plot, you describe your data with a `HealpixGrid` object that wraps
 the healpix-geo parameters:
 
 ```python
-import healpix_plotting
+import healpix_plot
 
-grid = healpix_plotting.HealpixGrid(
+grid = healpix_plot.HealpixGrid(
     level=4,  # resolution level, 0-29
     indexing_scheme="nested",  # "nested", "ring", or "zuniq"
     ellipsoid="sphere",  # default; "WGS84" for geodesic accuracy

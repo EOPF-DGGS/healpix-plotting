@@ -1,6 +1,6 @@
 # User Guide
 
-Everything you need to understand how healpix-plotting works.
+Everything you need to understand how healpix-plot works.
 
 ## Chapters
 
