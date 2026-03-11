@@ -1,5 +1,5 @@
 [project]
-name = "healpix-plotting"
+name = "healpix-plot"
 requires-python = ">= 3.13"
 license = { text = "Apache-2.0" }
 dependencies = [

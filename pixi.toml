@@ -1,7 +1,7 @@
 [workspace]
 authors = ["Justus Magin <keewis@posteo.de>"]
 channels = ["conda-forge"]
-name = "healpix-plotting"
+name = "healpix-plot"
 platforms = ["linux-64", "osx-arm64", "win-64"]
 version = "0.1.0"
 
