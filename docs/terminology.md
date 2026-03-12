@@ -4,7 +4,7 @@
 
 ```{glossary}
 HEALPix
-  Hierarchical Equal Area isoLatitude Pixelization. Divides the sphere into equal-area cells identified by ``(level, cell_id)``. healpix-plotting uses `healpix-geo` for all HEALPix ↔ lon/lat conversions.
+  Hierarchical Equal Area isoLatitude Pixelization. Divides the sphere into equal-area cells identified by ``(level, cell_id)``. healpix-plot uses `healpix-geo` for all HEALPix ↔ lon/lat conversions.
 
 Cell ID
   Integer identifier for a single HEALPix cell. Its meaning depends on the indexing scheme (*nested*, *ring*, or *zuniq*).

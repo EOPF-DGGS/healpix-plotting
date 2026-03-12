@@ -11,7 +11,7 @@ kernelspec:
 
 # Quickstart
 
-This guide shows the three ways to define a sampling grid in healpix-plotting, from the simplest dict shorthand to a pixel-aligned affine grid.
+This guide shows the three ways to define a sampling grid in healpix-plot, from the simplest dict shorthand to a pixel-aligned affine grid.
 
 ## Setup
 
@@ -33,7 +33,10 @@ healpix_grid = healpix_plot.HealpixGrid(
     level=3, indexing_scheme="nested", ellipsoid="WGS84"
 )
 
-cell_ids = np.arange(4**healpix_grid.level)
+cell_ids = np.arange(
+    4 * 4**healpix_grid.level, 5 * 4**healpix_grid.level, dtype="uint64"
+)
+
 lon, lat = healpix_grid.operations.healpix_to_lonlat(
     cell_ids, **healpix_grid.as_keyword_params()
 )
@@ -78,11 +81,13 @@ healpix_grid = healpix_plot.HealpixGrid(
 )
 
 grid = ParametrizedSamplingGrid.from_bbox(
-    bbox=(5, 36.0, 13.0, 45.0),  # (xmin, ymin, xmax, ymax) in degrees
+    bbox=(-1, 20.0, 1, 40.0),  # (xmin, ymin, xmax, ymax) in degrees
     shape=512,
 )
 
-cell_ids = np.arange(4**healpix_grid.level, dtype="uint64")
+cell_ids = np.arange(
+    4 * 4**healpix_grid.level, 5 * 4**healpix_grid.level, dtype="uint64"
+)
 
 
 lon, lat = healpix_grid.operations.healpix_to_lonlat(
@@ -120,7 +125,9 @@ healpix_grid = healpix_plot.HealpixGrid(
     level=6, indexing_scheme="nested", ellipsoid="WGS84"
 )
 
-cell_ids = np.arange(4**healpix_grid.level, dtype="uint64")
+cell_ids = np.arange(
+    4 * 4**healpix_grid.level, 5 * 4**healpix_grid.level, dtype="uint64"
+)
 
 
 lon, lat = healpix_grid.operations.healpix_to_lonlat(
@@ -128,7 +135,7 @@ lon, lat = healpix_grid.operations.healpix_to_lonlat(
 )
 data = np.cos(8 * np.deg2rad(lon)) * np.sin(4 * np.deg2rad(lat))
 
-transform = Affine(0.01, 0, 5, 0, -0.01, 45)  # 0.01° resolution
+transform = Affine(0.01, 0, -1, 0, -0.01, 40)  # 0.01° resolution
 grid = AffineSamplingGrid.from_transform(transform, shape=(512, 512))
 
 fig, axes = plt.subplots(
@@ -148,11 +155,11 @@ ax.gridlines(draw_labels="y")
 
 ## Recipe: overlay true HEALPix boundaries
 
-For sanity checks or presentations you can combine fast raster plots from `healpix-plotting` with boundary polygons from [`xdggs`](https://xdggs.readthedocs.io/):
+For sanity checks or presentations you can combine fast raster plots from `healpix-plot` with boundary polygons from [`xdggs`](https://xdggs.readthedocs.io/):
 
 ```{code-cell} python
 ---
-tags: [hide-cell]
+tags: [hide-input]
 ---
 import numpy as np
 import healpix_plot
@@ -165,7 +172,9 @@ healpix_grid = healpix_plot.HealpixGrid(
     level=4, indexing_scheme="nested", ellipsoid="WGS84"
 )
 
-cell_ids = np.arange(4**healpix_grid.level, dtype="uint64")
+cell_ids = np.arange(
+    4 * 4**healpix_grid.level, 5 * 4**healpix_grid.level, dtype="uint64"
+)
 
 # example data
 lon, lat = healpix_grid.operations.healpix_to_lonlat(
