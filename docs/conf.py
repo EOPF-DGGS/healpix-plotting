@@ -31,8 +31,8 @@ extensions = [
 ]
 
 extlinks = {
-    "issue": ("https://github.com/EOPF-DGGS/healpix-plotting/issues/%s", "GH%s"),
-    "pull": ("https://github.com/EOPF-DGGS/healpix-plotting/pull/%s", "PR%s"),
+    "issue": ("https://github.com/EOPF-DGGS/healpix-plot/issues/%s", "GH%s"),
+    "pull": ("https://github.com/EOPF-DGGS/healpix-plot/pull/%s", "PR%s"),
 }
 
 myst_enable_extensions = [
@@ -77,7 +77,7 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "GitHub",
-            "url": "https://github.com/EOPF-DGGS/healpix-plotting",
+            "url": "https://github.com/EOPF-DGGS/healpix-plot",
             "icon": "fa brands fa-square-github",
             "type": "fontawesome",
         },
