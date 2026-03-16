@@ -1,4 +1,4 @@
-# healpix-plotting
+# healpix-plot
 
 `healpix-plot` prioritises **getting a usable figure quickly** over perfectly accurate cell-geometry rendering. It rasterises HEALPix data via nearest-neighbour resampling onto a regular lon/lat grid and renders the result with Cartopy's `imshow`.
 
