@@ -1,6 +1,7 @@
 [project]
 name = "healpix-plot"
 requires-python = ">= 3.11"
+readme = "README.md"
 license = { text = "Apache-2.0" }
 dependencies = [
   "healpix-geo",
