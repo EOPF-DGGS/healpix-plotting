@@ -548,37 +548,3 @@ def mollgnomview(
         if unit:
             cbar.set_label(unit, color="white")
 
-
-# ---------------------------------------------------------------------------
-# Test rapide
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    import time
-    import matplotlib
-    matplotlib.use("Agg")   # pas de fenêtre interactive
-
-    depth = 5
-    npix  = 12 * 4**depth
-    rng   = np.random.default_rng(42)
-    m     = rng.standard_normal(npix)
-    m[rng.integers(0, npix, 200)] = np.nan
-
-    # --- Carte unique (nouvelle figure) ---
-    t0 = time.perf_counter()
-    mollview(m, title=f"RING  depth={depth}", cmap="RdBu_r", unit="[σ]")
-    print(f"Rendu : {(time.perf_counter()-t0)*1000:.0f} ms")
-    plt.savefig("/mnt/user-data/outputs/mollview_single.png",
-                dpi=150, bbox_inches="tight", facecolor="black")
-    plt.close()
-
-    # --- Deux cartes côte à côte via sub= ---
-    plt.figure(figsize=(18, 5), facecolor="black")
-    mollview(m, title="RING — sphere",  cmap="plasma", sub=(1, 2, 1), graticule_step=60)
-    mollview(m, title="RING — rot=180", cmap="plasma", sub=(1, 2, 2), graticule_step=60, rot=180)
-    plt.tight_layout()
-    plt.savefig("/mnt/user-data/outputs/mollview_subplots.png",
-                dpi=150, bbox_inches="tight", facecolor="black")
-    plt.close()
-
-    print("Fichiers écrits dans /mnt/user-data/outputs/")
