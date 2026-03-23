@@ -161,7 +161,7 @@ def mollview(
     n_lat:            int                       = 900,
     norm:             Optional[mcolors.Normalize] = None,
     bad_color:        str                       = "gray",
-    flip:             str                       = "astro",
+    flip:             str                       = "geo",
     figsize:          tuple[float, float]       = (14, 7),
     colorbar:         bool                      = True,
     hold:             bool                      = False,
@@ -210,7 +210,7 @@ def mollview(
         Custom matplotlib normalisation (e.g. ``LogNorm()``).
     bad_color : str, default "gray"
         Colour for NaN pixels.
-    flip : str, default "astro"
+    flip : str, default "geo"
         ``"astro"`` — east to the left (astronomical convention).
         ``"geo"``   — east to the right (geographic convention, cartopy default).
     figsize : (float, float), default (14, 7)
@@ -261,7 +261,7 @@ def mollview(
     # We also need to reverse lons_1d so the imshow extent is consistent.
     if flip == "astro":
         data_img = data_img[:, ::-1]
-        lons_1d  = lons_1d[::-1].copy()
+        lons_1d  = -lons_1d[::-1].copy()
 
     # ------------------------------------------------------------------
     # 3. Colour normalisation
@@ -470,35 +470,3 @@ def mollgnomview(
         cbar.outline.set_edgecolor("white")
         if unit:
             cbar.set_label(unit, color="white")
-
-
-# ---------------------------------------------------------------------------
-# Quick smoke-test
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    import matplotlib
-    matplotlib.use("Agg")
-
-    depth = 5
-    rng   = np.random.default_rng(42)
-    m     = rng.standard_normal(12 * 4**depth)
-    m[rng.integers(0, m.size, 200)] = np.nan
-
-    # Full-sky Mollweide
-    mollview(m, title="healpix-geo + cartopy Mollweide", cmap="RdBu_r",
-             unit="[σ]", coastlines=False)
-    plt.savefig("/mnt/user-data/outputs/mollview_cartopy.png",
-                dpi=150, bbox_inches="tight", facecolor="black")
-    plt.close()
-
-    # Side-by-side via sub=
-    plt.figure(figsize=(18, 5), facecolor="black")
-    mollview(m, sub=(1, 2, 1), title="sphere  rot=0",   cmap="plasma")
-    mollview(m, sub=(1, 2, 2), title="sphere  rot=180", cmap="plasma", rot=180)
-    plt.tight_layout()
-    plt.savefig("/mnt/user-data/outputs/mollview_cartopy_sub.png",
-                dpi=150, bbox_inches="tight", facecolor="black")
-    plt.close()
-
-    print("Done — outputs written to /mnt/user-data/outputs/")
