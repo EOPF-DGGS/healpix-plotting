@@ -115,7 +115,6 @@ plt.show()
 ```python
 mollview(
     hpx_map,
-    *,
     nest             = False,
     title            = "",
     cmap             = "viridis",
@@ -199,7 +198,6 @@ mollgnomview(
     hpx_map,
     lon_center,
     lat_center,
-    *,
     nest             = False,
     fov_deg          = 10.0,
     title            = "",
