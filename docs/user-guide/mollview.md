@@ -88,21 +88,26 @@ from mollview import mollview, mollgnomview
 
 # --- Synthetic RING map (depth 5, nside 32) ---
 depth = 5
-npix  = 12 * 4**depth          # 12 288 pixels
-m     = np.random.default_rng(0).standard_normal(npix)
+npix = 12 * 4**depth  # 12 288 pixels
+m = np.random.default_rng(0).standard_normal(npix)
 
 # Fast full-sky view (pure matplotlib, no cartopy)
 mollview(m, title="My map", cmap="RdBu_r", unit="K")
 plt.show()
 
 # With coastlines (requires cartopy)
-mollview(m, title="With coastlines", coastlines=True,
-         coastline_kwargs={"linewidth": 0.8, "edgecolor": "cyan"})
+mollview(
+    m,
+    title="With coastlines",
+    coastlines=True,
+    coastline_kwargs={"linewidth": 0.8, "edgecolor": "cyan"},
+)
 plt.show()
 
 # Local zoom centred on (lon=45deg, lat=30deg)
-mollgnomview(m, lon_center=45.0, lat_center=30.0, fov_deg=20.0,
-             title="Zoom 20deg", cmap="plasma")
+mollgnomview(
+    m, lon_center=45.0, lat_center=30.0, fov_deg=20.0, title="Zoom 20deg", cmap="plasma"
+)
 plt.show()
 ```
 
@@ -115,28 +120,28 @@ plt.show()
 ```python
 mollview(
     hpx_map,
-    nest             = False,
-    title            = "",
-    cmap             = "viridis",
-    vmin             = None,
-    vmax             = None,
-    rot              = 0.0,
-    ellipsoid        = "sphere",
-    graticule        = True,
-    graticule_step   = 30.0,
-    unit             = "",
-    bgcolor          = "black",
-    n_lon            = 1800,
-    n_lat            = 900,
-    norm             = None,
-    bad_color        = "gray",
-    flip             = "geo",
-    figsize          = (14, 7),
-    colorbar         = True,
-    hold             = False,
-    sub              = None,
-    coastlines       = False,
-    coastline_kwargs = None,
+    nest=False,
+    title="",
+    cmap="viridis",
+    vmin=None,
+    vmax=None,
+    rot=0.0,
+    ellipsoid="sphere",
+    graticule=True,
+    graticule_step=30.0,
+    unit="",
+    bgcolor="black",
+    n_lon=1800,
+    n_lat=900,
+    norm=None,
+    bad_color="gray",
+    flip="geo",
+    figsize=(14, 7),
+    colorbar=True,
+    hold=False,
+    sub=None,
+    coastlines=False,
+    coastline_kwargs=None,
 )
 ```
 
@@ -198,22 +203,22 @@ mollgnomview(
     hpx_map,
     lon_center,
     lat_center,
-    nest             = False,
-    fov_deg          = 10.0,
-    title            = "",
-    cmap             = "viridis",
-    vmin             = None,
-    vmax             = None,
-    ellipsoid        = "sphere",
-    unit             = "",
-    n_lon            = 800,
-    n_lat            = 800,
-    figsize          = (7, 7),
-    colorbar         = True,
-    hold             = False,
-    sub              = None,
-    coastlines       = False,
-    coastline_kwargs = None,
+    nest=False,
+    fov_deg=10.0,
+    title="",
+    cmap="viridis",
+    vmin=None,
+    vmax=None,
+    ellipsoid="sphere",
+    unit="",
+    n_lon=800,
+    n_lat=800,
+    figsize=(7, 7),
+    colorbar=True,
+    hold=False,
+    sub=None,
+    coastlines=False,
+    coastline_kwargs=None,
 )
 ```
 
@@ -496,13 +501,13 @@ PlateCarree space and uses a `Gnomonic` GeoAxes, for the same reason as
 ```python
 # healpy
 import healpy as hp
-hp.mollview(m, title="My map", nest=False, cmap="RdBu_r", unit="K",
-            min=-3, max=3)
+
+hp.mollview(m, title="My map", nest=False, cmap="RdBu_r", unit="K", min=-3, max=3)
 
 # This module — drop-in equivalent
 from mollview import mollview
-mollview(m, title="My map", nest=False, cmap="RdBu_r", unit="K",
-         vmin=-3, vmax=3)
+
+mollview(m, title="My map", nest=False, cmap="RdBu_r", unit="K", vmin=-3, vmax=3)
 ```
 
 Parameter renames: `min` → `vmin`, `max` → `vmax`, `width_px`/`height_px` → `n_lon`/`n_lat`.
@@ -521,6 +526,7 @@ convention.
 
 ```python
 import matplotlib
+
 matplotlib.use("Agg")
 
 from mollview import mollview
@@ -541,10 +547,14 @@ mollview(m, flip="astro", title="Astro convention")
 
 ```python
 # Requires: pip install cartopy
-mollview(m, flip="geo", ellipsoid="WGS84",
-         coastlines=True,
-         coastline_kwargs={"linewidth": 0.8, "edgecolor": "white"},
-         title="Geographic — WGS84")
+mollview(
+    m,
+    flip="geo",
+    ellipsoid="WGS84",
+    coastlines=True,
+    coastline_kwargs={"linewidth": 0.8, "edgecolor": "white"},
+    title="Geographic — WGS84",
+)
 ```
 
 ### Custom colour normalisation (log scale)
@@ -553,8 +563,12 @@ mollview(m, flip="geo", ellipsoid="WGS84",
 import matplotlib.colors as mcolors
 from mollview import mollview
 
-mollview(m_positive, norm=mcolors.LogNorm(vmin=1e-3, vmax=1.0),
-         title="Log scale", cmap="inferno")
+mollview(
+    m_positive,
+    norm=mcolors.LogNorm(vmin=1e-3, vmax=1.0),
+    title="Log scale",
+    cmap="inferno",
+)
 ```
 
 ### Symmetric diverging scale
@@ -564,8 +578,13 @@ import numpy as np
 from mollview import mollview
 
 absmax = np.nanpercentile(np.abs(m), 98)
-mollview(m, vmin=-absmax, vmax=absmax, cmap="RdBu_r",
-         title="Symmetric +/-{:.2f}".format(absmax))
+mollview(
+    m,
+    vmin=-absmax,
+    vmax=absmax,
+    cmap="RdBu_r",
+    title="Symmetric +/-{:.2f}".format(absmax),
+)
 ```
 
 ### Compare two maps side by side
@@ -589,9 +608,16 @@ import matplotlib.pyplot as plt
 from mollview import mollview, mollgnomview
 
 fig = plt.figure(figsize=(18, 8), facecolor="black")
-mollview(m,     sub=(1, 2, 1), title="Full sky",   cmap="RdBu_r")
-mollgnomview(m, lon_center=45.0, lat_center=30.0,
-             fov_deg=20.0, sub=(1, 2, 2), title="Zoom 20deg", cmap="RdBu_r")
+mollview(m, sub=(1, 2, 1), title="Full sky", cmap="RdBu_r")
+mollgnomview(
+    m,
+    lon_center=45.0,
+    lat_center=30.0,
+    fov_deg=20.0,
+    sub=(1, 2, 2),
+    title="Zoom 20deg",
+    cmap="RdBu_r",
+)
 plt.tight_layout()
 plt.show()
 ```
@@ -601,8 +627,7 @@ plt.show()
 ```python
 # depth=8 -> nside=256 -> 786 432 pixels
 # Default 1800x900 may be too coarse; use 3600x1800
-mollview(m_high_res, n_lon=3600, n_lat=1800,
-         title="High-res map (depth=8)")
+mollview(m_high_res, n_lon=3600, n_lat=1800, title="High-res map (depth=8)")
 ```
 
 ---
