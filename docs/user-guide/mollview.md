@@ -7,27 +7,29 @@
 
 ## Table of Contents
 
-1. [Overview](#1-overview)
-2. [Installation & Dependencies](#2-installation--dependencies)
-3. [Quick Start](#3-quick-start)
-4. [Public API](#4-public-api)
-   - 4.1 [`mollview`](#41-mollview)
-   - 4.2 [`mollgnomview`](#42-mollgnomview)
-5. [Figure Layout — `hold` and `sub`](#5-figure-layout--hold-and-sub)
-6. [RING vs NESTED pixel ordering](#6-ring-vs-nested-pixel-ordering)
-7. [Ellipsoid support](#7-ellipsoid-support)
-8. [Rendering backends](#8-rendering-backends)
-   - 8.1 [Fast path (default)](#81-fast-path-default)
-   - 8.2 [Cartopy path (`coastlines=True`)](#82-cartopy-path-coastlinestrue)
-9. [Algorithm — projection math](#9-algorithm--projection-math)
-   - 9.1 [Mollweide projection](#91-mollweide-projection)
-   - 9.2 [Gnomonic projection](#92-gnomonic-projection)
-10. [Internal helpers](#10-internal-helpers)
-11. [Comparison with `healpy`](#11-comparison-with-healpy)
-12. [Common recipes](#12-common-recipes)
-13. [Known limitations](#13-known-limitations)
+1. [Overview](#overview)
+2. [Installation & Dependencies](#installation-dependencies)
+3. [Quick Start](#quick-start)
+4. [Public API](#public-api)
+   - 4.1 [`mollview`](#mollview)
+   - 4.2 [`mollgnomview`](#mollgnomview)
+5. [Figure Layout — `hold` and `sub`](#figure-layout-hold-and-sub)
+6. [RING vs NESTED pixel ordering](#ring-vs-nested-pixel-ordering)
+7. [Ellipsoid support](#ellipsoid-support)
+8. [Rendering backends](#rendering-backends)
+   - 8.1 [Fast path (default)](#fast-path-default)
+   - 8.2 [Cartopy path (`coastlines=True`)](#cartopy-path-coastlinestrue)
+9. [Algorithm — projection math](#algorithm--projection-math)
+   - 9.1 [Mollweide projection](#mollweide-projection)
+   - 9.2 [Gnomonic projection](#gnomonic-projection)
+10. [Internal helpers](#internal-helpers)
+11. [Comparison with `healpy`](#comparison-with-healpy)
+12. [Common recipes](#common-recipes)
+13. [Known limitations](#known-limitations)
 
 ---
+
+(overview)=
 
 ## 1. Overview
 
@@ -56,6 +58,8 @@ Key differences from healpy:
 
 ---
 
+(installation-dependencies)=
+
 ## 2. Installation & Dependencies
 
 **Always required:**
@@ -78,6 +82,8 @@ a clear `ImportError` is raised with installation instructions.
 Python >= 3.10 is required (uses `X | Y` union type hints).
 
 ---
+
+(quick-start)=
 
 ## 3. Quick Start
 
@@ -113,7 +119,11 @@ plt.show()
 
 ---
 
+(public-api)=
+
 ## 4. Public API
+
+(mollview)=
 
 ### 4.1 `mollview`
 
@@ -196,6 +206,8 @@ The rendering backend is chosen **automatically**:
 
 ---
 
+(mollgnomview)=
+
 ### 4.2 `mollgnomview`
 
 ```python
@@ -241,6 +253,8 @@ All other parameters (`nest`, `cmap`, `vmin`, `vmax`, `ellipsoid`, `unit`,
 `coastline_kwargs`) behave identically to those of `mollview`.
 
 ---
+
+(figure-layout-hold-and-sub)=
 
 ## 5. Figure Layout — `hold` and `sub`
 
@@ -297,6 +311,8 @@ plt.show()
 
 ---
 
+(ring-vs-nested-pixel-ordering)=
+
 ## 6. RING vs NESTED pixel ordering
 
 HEALPix maps can be stored in two pixel orderings:
@@ -319,6 +335,8 @@ mollview(m_nested, nest=True)
 
 ---
 
+(ellipsoid-support)=
+
 ## 7. Ellipsoid support
 
 The `ellipsoid` parameter is forwarded directly to
@@ -337,9 +355,13 @@ mollview(m_ring, ellipsoid="WGS84", title="WGS84 Mollweide")
 
 ---
 
+(rendering-backends)=
+
 ## 8. Rendering backends
 
 The backend is selected **automatically** based on the `coastlines` parameter.
+
+(fast-path-default)=
 
 ### 8.1 Fast path (default)
 
@@ -371,6 +393,8 @@ The graticule is drawn by pre-projecting meridians and parallels with
 This replaces `ax.gridlines()`, which alone costs ~400 ms in cartopy.
 
 Typical time (nside=64, 1800×900): **~70 ms**.
+
+(cartopy-path-coastlinestrue)=
 
 ### 8.2 Cartopy path (`coastlines=True`)
 
@@ -410,7 +434,11 @@ image (~200 ms) are both required by `add_feature()`.
 
 ---
 
+(algorithm--projection-math)=
+
 ## 9. Algorithm — projection math
+
+(mollweide-projection)=
 
 ### 9.1 Mollweide projection
 
@@ -437,6 +465,8 @@ y = √2 · sin(θ)
 
 Convergence is reached in fewer than 10 iterations to `tol=1e-9`.
 
+(gnomonic-projection)=
+
 ### 9.2 Gnomonic projection
 
 The gnomonic (tangent-plane) projection is centred on `(lon_center, lat_center)`.
@@ -456,6 +486,8 @@ PlateCarree space and uses a `Gnomonic` GeoAxes, for the same reason as
 `mollview` (coastline alignment).
 
 ---
+
+(internal-helpers)=
 
 ## 10. Internal helpers
 
@@ -477,6 +509,8 @@ PlateCarree space and uses a `Gnomonic` GeoAxes, for the same reason as
 | `_require_cartopy`           | `() → (ccrs, cfeature)`                                                  | Lazy cartopy import with a clear error message if not installed.                          |
 
 ---
+
+(comparison-with-healpy)=
 
 ## 11. Comparison with `healpy`
 
@@ -519,6 +553,8 @@ to `"astro"` (east to the left). Add `flip="astro"` to reproduce the healpy
 convention.
 
 ---
+
+(common-recipes)=
 
 ## 12. Common recipes
 
@@ -631,6 +667,8 @@ mollview(m_high_res, n_lon=3600, n_lat=1800, title="High-res map (depth=8)")
 ```
 
 ---
+
+(known-limitations)=
 
 ## 13. Known limitations
 
