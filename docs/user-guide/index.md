@@ -33,4 +33,5 @@ How the output pixel grid is defined: dict shorthand, bounding box, or affine tr
 healpix-grid
 sampling-grid
 plot-function
+mollview
 ```
