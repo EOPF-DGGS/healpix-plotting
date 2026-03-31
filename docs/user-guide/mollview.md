@@ -26,7 +26,7 @@ Key differences from healpy:
   healpy's interface.
 - **Two rendering backends**, selected automatically:
   - _Fast path_ (default): pure matplotlib, no cartopy required, ~70 ms.
-  - _Cartopy path_: activated by `coastlines=True`, ~500 ms.*
+  - _Cartopy path_: activated by `coastlines=True`, ~500 ms.\*
 
 ## Figure Layout — `hold` and `sub`
 
@@ -187,7 +187,6 @@ image (~200 ms) are both required by `add_feature()`.
 | cartopy dependency   | not required                  | optional (only for `coastlines=True`)                |
 | NaN handling         | `bad_color`                   | `bad_color`                                          |
 | Colour normalisation | `min`/`max`                   | percentiles 2/98 by default; custom `norm` supported |
-
 
 ### Migration from healpy
 
