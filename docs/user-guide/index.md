@@ -25,6 +25,12 @@ All parameters explained: colormap, projection, interpolation, colorbar.
 How the output pixel grid is defined: dict shorthand, bounding box, or affine transform.
 :::
 
+:::{grid-item-card} Mollweide visualisation
+:link: mollview
+:link-type: doc
+Rendering backends, pixel ordering, ellipsoid support, figure layouts, and healpy migration guide.
+:::
+
 ::::
 
 ```{toctree}
